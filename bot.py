@@ -16,6 +16,8 @@ import sys
 from database import DatabaseStorage
 
 storage = DatabaseStorage()
+print("TOKEN", os.environ["TOKEN"])
+print("env", os.environ)
 updater = Updater(os.environ["TOKEN"])
 
 
