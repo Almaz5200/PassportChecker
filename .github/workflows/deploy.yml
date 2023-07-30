@@ -19,7 +19,9 @@ jobs:
           sudo systemctl restart docker
 
       - name: Build Docker image
-        run: docker build -t vpn.almaz5200.com:5000/passport-checker:latest .
+        env: |
+          TOKEN_A: ${{ secrets.TOKEN }}
+        run: docker build --build-arg TOKEN=$TOKEN_A -t vpn.almaz5200.com:5000/passport-checker:latest .
 
       - name: Push Docker image
         run: docker push vpn.almaz5200.com:5000/passport-checker:latest
@@ -30,8 +32,6 @@ jobs:
           host: vpn.almaz5200.com
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          env: |
-            TOKEN_A: ${{ secrets.TOKEN }}
           script: |
             docker pull vpn.almaz5200.com:5000/passport-checker:latest
             docker stop passport_checker_container || true
