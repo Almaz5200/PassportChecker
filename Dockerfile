@@ -6,8 +6,7 @@ VOLUME /app/data
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ARG TOKEN
-ENV TOKEN=$TOKEN
+ENV TOKEN=${{ secrets.TOKEN_A }}
 # Set the environment variable to indicate that the application is running in Docker
 ENV RUNNING_IN_DOCKER true
 
