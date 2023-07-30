@@ -30,7 +30,7 @@ jobs:
           host: vpn.almaz5200.com
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          env:
+          env: |
             TOKEN: ${{ secrets.TOKEN }}
           script: |
             docker pull vpn.almaz5200.com:5000/passport-checker:latest
