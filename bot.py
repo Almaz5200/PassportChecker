@@ -4,7 +4,6 @@ import os
 import datetime
 from telegram import Update
 import time
-import pandas as pd
 from telegram.ext import (
     Updater,
     CommandHandler,
