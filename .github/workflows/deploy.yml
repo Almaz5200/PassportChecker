@@ -31,9 +31,9 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           env: |
-            TOKEN: ${{ secrets.TOKEN }}
+            TOKEN_A: ${{ secrets.TOKEN }}
           script: |
             docker pull vpn.almaz5200.com:5000/passport-checker:latest
             docker stop passport_checker_container || true
             docker rm passport_checker_container || true
-            docker run --env TOKEN=$TOKEN -d --name passport_checker_container --restart always -v passport_checker_main_data:/app/data vpn.almaz5200.com:5000/passport-checker:latest
+            docker run --build-arg TOKEN=$TOKEN_A -d --name passport_checker_container --restart always -v passport_checker_main_data:/app/data vpn.almaz5200.com:5000/passport-checker:latest
