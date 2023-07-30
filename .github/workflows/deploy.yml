@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure Docker daemon for insecure registry
+        run: |
+          echo '{ "insecure-registries" : ["vpn.almaz5200.com:5000"] }' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
+
+      - name: Build Docker image
+        run: docker build -t vpn.almaz5200.com:5000/telegram-bot:latest .
+
+      - name: Push Docker image
+        run: docker push vpn.almaz5200.com:5000/telegram-bot:latest
+
+      - name: Deploy to Debian server
+        uses: appleboy/ssh-action@master
+        with:
+          host: vpn.almaz5200.com
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull vpn.almaz5200.com:5000/telegram-bot:latest
+            docker stop telegram_bot_container || true
+            docker rm telegram_bot_container || true
+            docker run -d --name telegram_bot_container --restart always -v telegram_bot_main_data:/app/data vpn.almaz5200.com:5000/telegram-bot:latest
