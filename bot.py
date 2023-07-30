@@ -65,7 +65,7 @@ def main():
 
 
 if __name__ == "__main__":
-    schedule.every(60).seconds.do(do_users)
+    schedule.every(10).seconds.do(do_users)
     with ThreadPoolExecutor(max_workers=1) as executor:
         executor.submit(main)
         while True:
