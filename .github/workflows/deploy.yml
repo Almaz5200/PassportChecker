@@ -19,10 +19,10 @@ jobs:
           sudo systemctl restart docker
 
       - name: Build Docker image
-        run: docker build -t vpn.almaz5200.com:5000/telegram-bot:latest .
+        run: docker build -t vpn.almaz5200.com:5000/passport-checker:latest .
 
       - name: Push Docker image
-        run: docker push vpn.almaz5200.com:5000/telegram-bot:latest
+        run: docker push vpn.almaz5200.com:5000/passport-checker:latest
 
       - name: Deploy to Debian server
         uses: appleboy/ssh-action@master
@@ -30,8 +30,10 @@ jobs:
           host: vpn.almaz5200.com
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          env:
+            TOKEN: ${{ secrets.TOKEN }}
           script: |
-            docker pull vpn.almaz5200.com:5000/telegram-bot:latest
-            docker stop telegram_bot_container || true
-            docker rm telegram_bot_container || true
-            docker run -d --name telegram_bot_container --restart always -v telegram_bot_main_data:/app/data vpn.almaz5200.com:5000/telegram-bot:latest
+            docker pull vpn.almaz5200.com:5000/passport-checker:latest
+            docker stop passport_checker_container || true
+            docker rm passport_checker_container || true
+            docker run --env TOKEN=$TOKEN -d --name passport_checker_container --restart always -v passport_checker_main_data:/app/data vpn.almaz5200.com:5000/passport-checker:latest
