@@ -19,9 +19,7 @@ jobs:
           sudo systemctl restart docker
 
       - name: Build Docker image
-        env: |
-          TOKEN_A: ${{ secrets.TOKEN }}
-        run: docker build --build-arg TOKEN=$TOKEN_A -t vpn.almaz5200.com:5000/passport-checker:latest .
+        run: docker build --build-arg TOKEN=${{ secrets.TOKEN }} -t vpn.almaz5200.com:5000/passport-checker:latest .
 
       - name: Push Docker image
         run: docker push vpn.almaz5200.com:5000/passport-checker:latest
