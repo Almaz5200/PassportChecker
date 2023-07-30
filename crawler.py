@@ -9,6 +9,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from pyvirtualdisplay import Display
+
+# set xvfb display since there is no GUI in docker container.
+display = Display(visible=0, size=(800, 600))
+display.start()
 
 
 @dataclass
@@ -28,6 +33,8 @@ def crawl(id: str) -> CrawlResult:
 
     options = Options()
     options.headless = True
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     # options.add_experimental_option("detach", True)
 
     driver = webdriver.Chrome(
