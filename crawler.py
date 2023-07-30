@@ -31,7 +31,7 @@ def crawl(id: str) -> CrawlResult:
     # options.add_experimental_option("detach", True)
 
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager(version="114.0.5735.90").install()),
+        service=Service(ChromeDriverManager(driver_version="114.0.5735.90").install()),
         options=options,
     )
 
@@ -59,3 +59,7 @@ def crawl(id: str) -> CrawlResult:
     percent = percent.get("class")[1].split("-")[-1]
 
     return CrawlResult(status, percent)
+
+
+if __name__ == "__main__":
+    print(crawl("123456"))
