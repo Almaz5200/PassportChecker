@@ -1,4 +1,3 @@
-from requests import request
 import bs4
 from dataclasses import dataclass
 from time import sleep
